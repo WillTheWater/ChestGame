@@ -1,6 +1,9 @@
+/*
 #include <iostream>
 #include "SFML/Graphics.hpp"
 #include "Chest.h"
+
+
 
 
 int main()
@@ -78,7 +81,7 @@ int main()
                         canOpenChest = false;
                     }
                     else{ std::cout << "Chest is already Open!" << std::endl; }
-                }*/
+                }
             }
             else { gameWindow.setMouseCursor(cursorOpen); }
         }
@@ -105,4 +108,4 @@ int main()
         gameWindow.display();
     }
 	return 0;
-}
+}*/
