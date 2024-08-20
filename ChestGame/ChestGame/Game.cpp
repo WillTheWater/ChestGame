@@ -61,7 +61,7 @@ int main()
                 if (startButton.StartGame(gameWindow)) { gameState = GameState::Playing; }
                 break;
             case GameState::Playing:
-                //TODO
+                if (startButton.StartGame(gameWindow)) { gameState = GameState::MainMenu; }
                 break;
         }
         // Render GameStates
@@ -74,6 +74,7 @@ int main()
                 break;
             case GameState::Playing:
                 gameWindow.draw(backgroundSprite);
+                startButton.DrawButton(gameWindow); 
                 break;
         }
         gameWindow.display();
