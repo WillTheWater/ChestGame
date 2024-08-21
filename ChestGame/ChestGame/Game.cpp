@@ -4,7 +4,7 @@
 #include "Button.h"
 #include "GameStates.h"
 
-Button startButton;
+
 
 
 int main()
@@ -34,8 +34,27 @@ int main()
     backgroundTexture.loadFromFile("assets/graphics/background.png"); 
     sf::Sprite backgroundSprite;
     backgroundSprite.setTexture(backgroundTexture);
+    sf::Texture mainmenuTexture;
+    mainmenuTexture.loadFromFile("assets/graphics/mainmenu.png");
+    sf::Sprite mainmenuSprite;
+    mainmenuSprite.setTexture(mainmenuTexture);
+    //-----------------------------------------------------------------------------------------------------------
+    // Start Button
+    Button startButton;
+    startButton.UpdatePosition(sf::Vector2f{ gameWindow.getSize().x/2.f - startButton.GetBounds().width/2.f,gameWindow.getSize().y / 2.f});
+    startButton.SetButtonText("Start Game");
+    Button quitButton;
+    quitButton.UpdatePosition(sf::Vector2f{ gameWindow.getSize().x / 2.f - quitButton.GetBounds().width / 2.f,gameWindow.getSize().y / 2.f + startButton.GetBounds().height});
+    quitButton.SetButtonText("Quit Game");
+    Button resetButton;
+    resetButton.UpdatePosition(sf::Vector2f{ gameWindow.getSize().x / 2.f - resetButton.GetBounds().width / 2.f,gameWindow.getSize().y - resetButton.GetBounds().height });
+    resetButton.SetButtonText("Reset");
+    //-----------------------------------------------------------------------------------------------------------
+    // Chests
+    Chest chest1;
+    Chest chest2;
+    Chest chest3;
 
-    
     // Main game loop
     while (gameWindow.isOpen())
     {
@@ -58,10 +77,11 @@ int main()
         switch (gameState)
         {
             case GameState::MainMenu:
-                if (startButton.StartGame(gameWindow)) { gameState = GameState::Playing; }
+                if (startButton.HandleEvent(event)) { gameState = GameState::Playing; }
+                if (quitButton.HandleEvent(event)) { gameWindow.close(); }
                 break;
             case GameState::Playing:
-                if (startButton.StartGame(gameWindow)) { gameState = GameState::MainMenu; }
+                if (resetButton.HandleEvent(event)) { gameState = GameState::MainMenu; }
                 break;
         }
         // Render GameStates
@@ -69,12 +89,16 @@ int main()
         switch (gameState) 
         {
             case GameState::MainMenu:
-               
-                startButton.DrawButton(gameWindow); 
+                gameWindow.draw(mainmenuSprite);
+                startButton.Draw(gameWindow); 
+                quitButton.Draw(gameWindow);
                 break;
             case GameState::Playing:
                 gameWindow.draw(backgroundSprite);
-                startButton.DrawButton(gameWindow); 
+                chest1.SpawnChest(gameWindow);
+                chest2.SpawnChest(gameWindow);
+                chest3.SpawnChest(gameWindow);
+                resetButton.Draw(gameWindow);
                 break;
         }
         gameWindow.display();

@@ -144,7 +144,6 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />

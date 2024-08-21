@@ -1,42 +1,116 @@
 #include <iostream>
 #include "Button.h"
-Button::Button()
+
+Button::Button(const std::string& textString, const std::string& texturePath)
+	: m_ButtonText{ textString, m_ButtonFont }
+
 {
-    buttonTexture.loadFromFile("assets/graphics/button.png");
-    buttonSprite.setTexture(buttonTexture);
-    diabloFont.loadFromFile("assets/font/bolddiablo.ttf");
-    buttonText.setFont(diabloFont);
-    ButtonText("Start", 75);
+	m_ButtonTexture.loadFromFile(texturePath);
+	m_ButtonFont.loadFromFile("assets/font/bolddiablo.ttf");
+	m_ButtonText.setFont(m_ButtonFont);
+	m_ButtonText.setFillColor(sf::Color::Black);
+	SetFontSize(36);
+	m_ButtonSprite.setColor(m_DefaultColor);
+	m_ButtonSprite.setTexture(m_ButtonTexture);
+	IsButtonDown = false;
+	CenterText();
 }
 
-Button::~Button()
+sf::FloatRect Button::GetBounds() const
 {
+    return m_ButtonSprite.getGlobalBounds();
 }
 
-void Button::DrawButton(sf::RenderWindow& gameWindow)
+void Button::SetButtonText(const std::string& buttonText)
 {
-    gameWindow.draw(buttonSprite);
+    m_ButtonText.setString(buttonText);
+	CenterText();
 }
 
-bool Button::StartGame(sf::RenderWindow& gameWindow)
+void Button::SetFontSize(unsigned int fontSize)
 {
-    sf::Vector2f mousePos = gameWindow.mapPixelToCoords(sf::Mouse::getPosition(gameWindow));
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        if (buttonSprite.getGlobalBounds().contains(mousePos))
-        {
-            std::cout << "Start Game" << std::endl;
-            return true;
-        }
-    }
-    return false;
+    m_ButtonText.setCharacterSize(fontSize);
+	CenterText();
 }
 
-void Button::ButtonText(const std::string& text, const unsigned int size)
+bool Button::HandleEvent(const sf::Event& event)
 {
-    buttonText.setString(text);
-    buttonText.setCharacterSize(size);
-    buttonText.setFillColor(sf::Color::Black);
-    buttonText.setPosition(100, 100);
-    std::cout << "drawing text" << std::endl;
+	bool handled = false;
+	if (event.type == sf::Event::MouseButtonPressed)
+	{
+		if (event.mouseButton.button == sf::Mouse::Left)
+		{
+			if (m_ButtonSprite.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
+			{
+				IsButtonDown = true;
+				OnButtonDown();
+			}
+		}
+	}
+	else if (event.type == sf::Event::MouseButtonReleased)
+	{
+		if (event.mouseButton.button == sf::Mouse::Left)
+		{
+			if (IsButtonDown && m_ButtonSprite.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
+			{
+				OnButtonDown();
+				handled = true;
+			}
+			IsButtonDown = false;
+		}
+	}
+	else if (event.type == sf::Event::MouseMoved)
+	{
+		if (!sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			if (m_ButtonSprite.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y))
+			{
+				OnButtonHover();
+			}
+			else
+			{
+				OnButtonUp();
+			}
+		}
+	}
+	return handled;
 }
+
+void Button::Draw(sf::RenderWindow& gamewindow)
+{
+	gamewindow.draw(m_ButtonSprite);
+	gamewindow.draw(m_ButtonText);
+	CenterText();
+}
+
+void Button::UpdatePosition(const sf::Vector2f& position)
+{
+	m_ButtonSprite.setPosition(position);
+	m_ButtonText.setPosition(position);
+}
+
+void Button::CenterText()
+{
+	sf::FloatRect bound = GetBounds();
+	sf::Vector2f center = sf::Vector2f{ bound.left + bound.width / 2.f, bound.top + bound.height / 2.f };
+	sf::FloatRect textBound = m_ButtonText.getGlobalBounds();
+	m_ButtonText.setPosition(center - sf::Vector2f{ textBound.width / 2.f, textBound.height });
+}
+
+void Button::OnButtonUp()
+{
+	IsButtonDown = false;
+	m_ButtonSprite.setColor(m_DefaultColor);
+}
+
+void Button::OnButtonDown()
+{
+	IsButtonDown = true;
+	m_ButtonSprite.setColor(m_DownColor);
+}
+
+void Button::OnButtonHover()
+{
+	m_ButtonSprite.setColor(m_HoverColor);
+}
+
