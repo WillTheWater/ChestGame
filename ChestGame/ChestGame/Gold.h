@@ -4,7 +4,7 @@
 class Gold : public Item
 {
 public:
-	Gold(const std::string& texturePath);
+	Gold();
 private:
 	void UpdateTextureRect();
 };

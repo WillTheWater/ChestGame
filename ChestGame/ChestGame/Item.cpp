@@ -7,9 +7,9 @@ Item::Item(const std::string& name,  float dropProbabilty, bool isStackable, int
 	m_Quantity{quantity}
 {
 	m_Sprite.setTexture(m_Texture);
-	m_Font.loadFromFile("assets/font/bolddiablo.ttf");
+	m_Font.loadFromFile("assets/font/lightdiablo.ttf");
 	m_DisplayName.setFont(m_Font);
-	m_DisplayName.setCharacterSize(20);
+	m_DisplayName.setCharacterSize(25);
 	m_DisplayName.setFillColor(sf::Color::White);
 }
 
@@ -86,4 +86,9 @@ void Item::DrawItem(sf::RenderWindow& window, const sf::Vector2f& position)
 void Item::SetDisplayNameColor(const sf::Color& color)
 {
 	m_DisplayName.setFillColor(color);
+}
+
+void Item::SetPosition(float x, float y)
+{
+	m_Sprite.setPosition(x, y);
 }

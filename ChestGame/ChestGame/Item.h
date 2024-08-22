@@ -22,6 +22,7 @@ public:
 	void SubtractFromStack(int amount);
 	void DrawItem(sf::RenderWindow& window, const sf::Vector2f& position);
 	void SetDisplayNameColor(const sf::Color& color);
+	void SetPosition(float x, float y);
 
 protected:
 	std::string m_Name;

@@ -1,12 +1,16 @@
 #include "Gold.h"
+#include <sstream>
 
-Gold::Gold(const std::string& texturePath)
+Gold::Gold()
 	: Item{"Gold", 1.f}
 {
 	m_Texture.loadFromFile("assets/graphics/gold.png");
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<>distr(10, 300);
+	std::stringstream ss;
+	ss << m_Quantity << " " << m_Name;
+	m_DisplayName.setString(ss.str());
 	m_Quantity = distr(gen);
 	UpdateTextureRect();
 }

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "SFML/Graphics.hpp"
 #include "Chest.h"
+#include "Gold.h"
 #include "Button.h"
 #include "GameStates.h"
 
@@ -54,6 +55,9 @@ int main()
     Chest chest1;
     Chest chest2;
     Chest chest3;
+    //-----------------------------------------------------------------------------------------------------------
+    // Gold
+    std::unique_ptr<Gold> gold = std::make_unique<Gold>();
 
     // Main game loop
     while (gameWindow.isOpen())
@@ -98,6 +102,9 @@ int main()
                 chest1.SpawnChest(gameWindow);
                 chest2.SpawnChest(gameWindow);
                 chest3.SpawnChest(gameWindow);
+                gold->DrawItem(gameWindow, sf::Vector2f(gameWindow.getSize().x / 2.f, gameWindow.getSize().y / 2.f));
+                //gameWindow.draw(gold->GetSprite());
+                //gold->SetPosition(gameWindow.getSize().x / 2.f, gameWindow.getSize().y / 2.f);
                 resetButton.Draw(gameWindow);
                 break;
         }
