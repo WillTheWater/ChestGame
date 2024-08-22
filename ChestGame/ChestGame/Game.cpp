@@ -45,7 +45,7 @@ int main()
     startButton.SetButtonText("Start Game");
     Button quitButton;
     quitButton.UpdatePosition(sf::Vector2f{ gameWindow.getSize().x / 2.f - quitButton.GetBounds().width / 2.f,gameWindow.getSize().y / 2.f + startButton.GetBounds().height});
-    quitButton.SetButtonText("Quit Game");
+    quitButton.SetButtonText("Exit the Kurast");
     Button resetButton;
     resetButton.UpdatePosition(sf::Vector2f{ gameWindow.getSize().x / 2.f - resetButton.GetBounds().width / 2.f,gameWindow.getSize().y - resetButton.GetBounds().height });
     resetButton.SetButtonText("Reset");
