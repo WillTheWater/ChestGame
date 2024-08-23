@@ -24,6 +24,9 @@ public:
 	void SetDisplayNameColor(const sf::Color& color);
 	void SetPosition(float x, float y);
 
+	// Pickup functionalities
+	bool Pickup(const sf::Event& event);
+
 protected:
 	std::string m_Name;
 	sf::Sprite m_Sprite;
@@ -33,6 +36,10 @@ protected:
 	float m_DropProbability;
 	bool m_IsStackabe;
 	int m_Quantity;
+	bool IsItemClicked;
+	void OnPickUp();
+	void OnItemClicked();
+	void OnItemHover();
 
 };
 

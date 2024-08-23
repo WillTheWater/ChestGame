@@ -42,6 +42,7 @@ bool Button::HandleEvent(const sf::Event& event)
 		{
 			if (m_ButtonSprite.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
 			{
+				std::cout << "Button Clicked\n";
 				IsButtonDown = true;
 				OnButtonDown();
 			}
@@ -53,6 +54,7 @@ bool Button::HandleEvent(const sf::Event& event)
 		{
 			if (IsButtonDown && m_ButtonSprite.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
 			{
+				std::cout << "Button Released\n";
 				OnButtonDown();
 				handled = true;
 			}
@@ -78,9 +80,9 @@ bool Button::HandleEvent(const sf::Event& event)
 
 void Button::Draw(sf::RenderWindow& gamewindow)
 {
+	CenterText();
 	gamewindow.draw(m_ButtonSprite);
 	gamewindow.draw(m_ButtonText);
-	CenterText();
 }
 
 void Button::UpdatePosition(const sf::Vector2f& position)

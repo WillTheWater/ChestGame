@@ -9,7 +9,7 @@ Gold::Gold()
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<>distr(10, 300);
 	std::stringstream ss;
-	ss << m_Quantity << " " << m_Name;
+	ss << distr(gen) << " " << m_Name;
 	m_DisplayName.setString(ss.str());
 	m_Quantity = distr(gen);
 	UpdateTextureRect();
@@ -18,6 +18,6 @@ Gold::Gold()
 void Gold::UpdateTextureRect()
 {
 	if (m_Quantity < 100) { m_Sprite.setTextureRect(sf::IntRect(60, 0, 30, 25)); }
-	else if (m_Quantity < 200) { m_Sprite.setTextureRect(sf::IntRect(30, 0, 30, 25)); }
-	else if (m_Quantity <= 300) { m_Sprite.setTextureRect(sf::IntRect(0, 0, 30, 25)); }
+	else if (m_Quantity > 99 && m_Quantity <= 199) { m_Sprite.setTextureRect(sf::IntRect(30, 0, 30, 25)); }
+	else if (m_Quantity >= 200) { m_Sprite.setTextureRect(sf::IntRect(0, 0, 30, 25)); }
 }

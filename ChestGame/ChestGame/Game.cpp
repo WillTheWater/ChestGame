@@ -8,7 +8,7 @@
 
 
 
-int main()
+/*int main()
 {
     // Game window
     sf::RenderWindow gameWindow(sf::VideoMode(1920, 1080), "The Lower Kurast");
@@ -103,12 +103,11 @@ int main()
                 chest2.SpawnChest(gameWindow);
                 chest3.SpawnChest(gameWindow);
                 gold->DrawItem(gameWindow, sf::Vector2f(gameWindow.getSize().x / 2.f, gameWindow.getSize().y / 2.f));
-                //gameWindow.draw(gold->GetSprite());
-                //gold->SetPosition(gameWindow.getSize().x / 2.f, gameWindow.getSize().y / 2.f);
+                gold->Pickup(event);
                 resetButton.Draw(gameWindow);
                 break;
         }
         gameWindow.display();
     }
     return 0;
-}
+}*/
