@@ -4,9 +4,9 @@ void GameStateManager::SetState(std::unique_ptr<GameState> newState) {
     this->m_CurrentState = std::move(newState);
 }
 
-void GameStateManager::HandleInput(sf::RenderWindow& window) {
+void GameStateManager::HandleInput(const sf::Event& event) {
     if (this->m_CurrentState) {
-        this->m_CurrentState->HandleInput(window);
+        this->m_CurrentState->HandleInput(event);
     }
 }
 

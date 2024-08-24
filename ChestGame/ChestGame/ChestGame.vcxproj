@@ -144,6 +144,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameCore.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="Gold.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="Chest.h" />
+    <ClInclude Include="GameCore.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="GameStates.h" />

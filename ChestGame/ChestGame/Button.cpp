@@ -56,9 +56,10 @@ bool Button::HandleEvent(const sf::Event& event)
 			{
 				std::cout << "Button Released\n";
 				OnButtonDown();
+				WasClicked();
 				handled = true;
 			}
-			IsButtonDown = false;
+			OnButtonUp();
 		}
 	}
 	else if (event.type == sf::Event::MouseMoved)
@@ -99,6 +100,11 @@ void Button::CenterText()
 	m_ButtonText.setPosition(center - sf::Vector2f{ textBound.width / 2.f, textBound.height });
 }
 
+bool Button::WasClicked()
+{
+	return true;
+}
+
 void Button::OnButtonUp()
 {
 	IsButtonDown = false;
@@ -115,4 +121,5 @@ void Button::OnButtonHover()
 {
 	m_ButtonSprite.setColor(m_HoverColor);
 }
+
 

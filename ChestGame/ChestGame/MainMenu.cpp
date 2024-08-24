@@ -9,31 +9,18 @@ MainMenu::MainMenu()
     std::cout << "Main Menu loaded\n";
 }
 
-void MainMenu::HandleInput(sf::RenderWindow& window) 
+void MainMenu::HandleInput(const sf::Event& event)
 {
     // Handle input for the main menu
-    sf::Event event;
-    while (window.pollEvent(event)) 
-    {
-        if (event.type == sf::Event::Closed) 
-        {
-            window.close();
-        }
-        if (event.type == sf::Event::MouseButtonPressed)
-        {
-            if (event.mouseButton.button == sf::Mouse::Left)
-            {
-                std::cout << "mouse pressed\n";
-            }
-        }
-        // Forward the event to the button
-        m_StartButton.HandleEvent(event);
-    }
-        std::cout << "Event tick\n";
+    m_StartButton.HandleEvent(event);
+    m_QuitButton.HandleEvent(event);
+    std::cout << "Event tick\n";
 }
 
-void MainMenu::Update() {
+void MainMenu::Update() 
+{
     // Update logic for the main menu
+   
 }
 
 void MainMenu::Draw(sf::RenderWindow& window) 

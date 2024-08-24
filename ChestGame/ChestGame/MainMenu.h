@@ -6,10 +6,10 @@ class MainMenu : public GameState
 {
 public:
     MainMenu();
-    void HandleInput(sf::RenderWindow& window) override;
+    void HandleInput(const sf::Event& event) override;
     void Update() override;
     void Draw(sf::RenderWindow& window) override;
-private:
+protected:
     sf::Texture m_MainmenuTexture;
     sf::Sprite m_MainmenuSprite;
     Button m_StartButton;

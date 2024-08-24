@@ -13,6 +13,7 @@ public:
 	void Draw(sf::RenderWindow& gamewindow);
 	void UpdatePosition(const sf::Vector2f& position);
 	void CenterText();
+	bool WasClicked();
 	
 private:
 	sf::Texture m_ButtonTexture;
