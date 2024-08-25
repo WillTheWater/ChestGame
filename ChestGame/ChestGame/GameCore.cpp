@@ -6,7 +6,6 @@ const sf::Time GameCore::TimePerFrame = sf::seconds(1.f / 60.f);
 GameCore::GameCore()
 	: mWindow(sf::VideoMode(1920, 1080), "The Lower Kurast", sf::Style::Close)
 	, mTexture()
-	, mPlayer()
 	, mFont()
 	, mStatisticsText()
 	, mStatisticsUpdateTime()
@@ -17,13 +16,7 @@ GameCore::GameCore()
 	, mIsMovingLeft(false)
 	, mMouseClick(false)
 {
-	if (!mTexture.loadFromFile("assets/graphics/cursoropen.png"))
-	{
-		// Handle loading error
-	}
 	mWindow.setFramerateLimit(60);
-	mPlayer.setTexture(mTexture);
-	mPlayer.setPosition(mWindow.getSize().x/2.f, mWindow.getSize().y/2.f);
 
 	// Cursor
 	mCursorOpenImage.loadFromFile("assets/graphics/cursoropen.png");
@@ -75,7 +68,11 @@ void GameCore::processEvents()
 			break;
 
 		case sf::Event::MouseButtonPressed:
-			handlePlayerInput(event.key.code, true);
+			mWindow.setMouseCursor(mCursorClosed); std::cout << "Mouse Close\n";
+			break;
+
+		case sf::Event::MouseButtonReleased:
+			mWindow.setMouseCursor(mCursorOpen); std::cout << "Mouse Open\n";
 			break;
 
 		case sf::Event::Closed:
@@ -87,14 +84,12 @@ void GameCore::processEvents()
 
 void GameCore::update(sf::Time elapsedTime)
 {
-	if (mMouseClick) { mWindow.setMouseCursor(mCursorClosed); std::cout << "Mouse Click\n"; }
-	
+
 }
 
 void GameCore::render()
 {
 	mWindow.clear();
-	mWindow.draw(mPlayer);
 	mWindow.draw(mStatisticsText);
 	mWindow.display();
 }
@@ -117,5 +112,4 @@ void GameCore::updateStatistics(sf::Time elapsedTime)
 
 void GameCore::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) { mMouseClick = isPressed; }
 }

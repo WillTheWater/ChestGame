@@ -10,7 +10,6 @@ public:
 	GameCore();
 	void					run();
 
-
 private:
 	void					processEvents();
 	void					update(sf::Time elapsedTime);
@@ -24,7 +23,6 @@ private:
 
 	sf::RenderWindow		mWindow;
 	sf::Texture				mTexture;
-	sf::Sprite				mPlayer;
 	sf::Font				mFont;
 	sf::Text				mStatisticsText;
 	sf::Time				mStatisticsUpdateTime;
