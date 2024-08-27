@@ -1,35 +1,50 @@
-#include <iostream>
 #include "Button.h"
+#include <iostream>
 
 Button::Button(const std::string& textString, const std::string& texturePath)
-	: m_ButtonText{ textString, m_ButtonFont }
+	: mButtonText{ textString, mButtonFont }
 
 {
-	m_ButtonTexture.loadFromFile(texturePath);
-	m_ButtonFont.loadFromFile("assets/font/bolddiablo.ttf");
-	m_ButtonText.setFont(m_ButtonFont);
-	m_ButtonText.setFillColor(sf::Color::Black);
+	mButtonTexture.loadFromFile(texturePath);
+	mButtonFont.loadFromFile("assets/font/bolddiablo.ttf");
+	mButtonText.setFont(mButtonFont);
+	mButtonText.setFillColor(sf::Color::Black);
 	SetFontSize(36);
-	m_ButtonSprite.setColor(m_DefaultColor);
-	m_ButtonSprite.setTexture(m_ButtonTexture);
+	mButtonSprite.setColor(mDefaultColor);
+	mButtonSprite.setTexture(mButtonTexture);
 	IsButtonDown = false;
 	CenterText();
 }
 
 sf::FloatRect Button::GetBounds() const
 {
-    return m_ButtonSprite.getGlobalBounds();
+	return mButtonSprite.getGlobalBounds();
+}
+
+void Button::InitButton(const std::string& textString, const std::string& texturePath, sf::RenderWindow& gamewindow, const sf::Vector2f& position)
+{
+	SetButtonText(textString);
+	SetButtonTexture(texturePath);
+	Draw(gamewindow);
+	UpdatePosition(position);
+	
 }
 
 void Button::SetButtonText(const std::string& buttonText)
 {
-    m_ButtonText.setString(buttonText);
+	mButtonText.setString(buttonText);
 	CenterText();
+}
+
+void Button::SetButtonTexture(const std::string& texturePath)
+{
+	mButtonTexture.loadFromFile(texturePath);
+	mButtonSprite.setTexture(mButtonTexture);
 }
 
 void Button::SetFontSize(unsigned int fontSize)
 {
-    m_ButtonText.setCharacterSize(fontSize);
+	mButtonText.setCharacterSize(fontSize);
 	CenterText();
 }
 
@@ -40,7 +55,7 @@ bool Button::HandleEvent(const sf::Event& event)
 	{
 		if (event.mouseButton.button == sf::Mouse::Left)
 		{
-			if (m_ButtonSprite.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
+			if (mButtonSprite.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
 			{
 				std::cout << "Button Clicked\n";
 				IsButtonDown = true;
@@ -52,7 +67,7 @@ bool Button::HandleEvent(const sf::Event& event)
 	{
 		if (event.mouseButton.button == sf::Mouse::Left)
 		{
-			if (IsButtonDown && m_ButtonSprite.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
+			if (IsButtonDown && mButtonSprite.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
 			{
 				std::cout << "Button Released\n";
 				OnButtonDown();
@@ -66,7 +81,7 @@ bool Button::HandleEvent(const sf::Event& event)
 	{
 		if (!sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			if (m_ButtonSprite.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y))
+			if (mButtonSprite.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y))
 			{
 				OnButtonHover();
 			}
@@ -82,22 +97,22 @@ bool Button::HandleEvent(const sf::Event& event)
 void Button::Draw(sf::RenderWindow& gamewindow)
 {
 	CenterText();
-	gamewindow.draw(m_ButtonSprite);
-	gamewindow.draw(m_ButtonText);
+	gamewindow.draw(mButtonSprite);
+	gamewindow.draw(mButtonText);
 }
 
 void Button::UpdatePosition(const sf::Vector2f& position)
 {
-	m_ButtonSprite.setPosition(position);
-	m_ButtonText.setPosition(position);
+	mButtonSprite.setPosition(position);
+	mButtonText.setPosition(position);
 }
 
 void Button::CenterText()
 {
 	sf::FloatRect bound = GetBounds();
 	sf::Vector2f center = sf::Vector2f{ bound.left + bound.width / 2.f, bound.top + bound.height / 2.f };
-	sf::FloatRect textBound = m_ButtonText.getGlobalBounds();
-	m_ButtonText.setPosition(center - sf::Vector2f{ textBound.width / 2.f, textBound.height });
+	sf::FloatRect textBound = mButtonText.getGlobalBounds();
+	mButtonText.setPosition(center - sf::Vector2f{ textBound.width / 2.f, textBound.height });
 }
 
 bool Button::WasClicked()
@@ -108,18 +123,16 @@ bool Button::WasClicked()
 void Button::OnButtonUp()
 {
 	IsButtonDown = false;
-	m_ButtonSprite.setColor(m_DefaultColor);
+	mButtonSprite.setColor(mDefaultColor);
 }
 
 void Button::OnButtonDown()
 {
 	IsButtonDown = true;
-	m_ButtonSprite.setColor(m_DownColor);
+	mButtonSprite.setColor(mDownColor);
 }
 
 void Button::OnButtonHover()
 {
-	m_ButtonSprite.setColor(m_HoverColor);
+	mButtonSprite.setColor(mHoverColor);
 }
-
-

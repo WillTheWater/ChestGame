@@ -1,22 +1,25 @@
 #pragma once
 #include <sstream>
 #include <iostream>
+#include "StateController.h"
 #include <SFML/Graphics.hpp>
 
 
-class GameCore
+class Game
 {
 public:
-	GameCore();
-	void					run();
+	Game();
+	void					Run();
 
 private:
-	void					processEvents();
-	void					update(sf::Time elapsedTime);
-	void					render();
+	void					ProcessEvents();
+	void					Update(sf::Time elapsedTime);
+	void					UpdateGameState();
+	void					Render();
 
-	void					updateStatistics(sf::Time elapsedTime);
-	void					handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
+	void					UpdateStatistics(sf::Time elapsedTime);
+	void					HandleKeyboardInput(sf::Keyboard::Key key, bool isPressed);
+	void					HandleMouseInput(sf::Mouse::Button button, bool isPressed);
 
 	static const float		PlayerSpeed;
 	static const sf::Time	TimePerFrame;
@@ -39,4 +42,6 @@ private:
 	sf::Image				mCursorOpenImage;
 	sf::Cursor				mCursorClosed;
 	sf::Image				mCursorClosedImage;
+	sf::Image				mWindowIcon;
+	StateController			mStateController;
 };

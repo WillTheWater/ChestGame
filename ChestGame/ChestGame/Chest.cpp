@@ -1,5 +1,5 @@
 #include "Chest.h"
-#include "random"
+#include <random>
 #include <iostream>
 
 Chest::Chest()
@@ -10,28 +10,25 @@ Chest::Chest()
     chestSprite.setPosition(SetRandomPosition());
 }
 
-Chest::~Chest()
-{
-}
-
 void Chest::SpawnChest(sf::RenderWindow& gameWindow)
 {
+    sf::Vector2f mousePos = gameWindow.mapPixelToCoords(sf::Mouse::getPosition(gameWindow));
+    
     gameWindow.draw(chestSprite);
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
-        if (chestSprite.getGlobalBounds().contains(GetMousePos(gameWindow)))
+        if (chestSprite.getGlobalBounds().contains(mousePos))
         {
             if (canOpenChest)
             {
                 chestSprite.setTextureRect(sf::IntRect(50, 0, 50, 60));
-                //std::cout << "Chest is Opened!" << std::endl;
+                std::cout << "Chest is Opened!" << std::endl; // <-- where loot should spawn
                 canOpenChest = false;
             }
             //else{ std::cout << "Chest is already Open!" << std::endl; }
         }
     }
 }
-
 sf::Vector2f Chest::SetRandomPosition()
 {
     // Define the range for x and y
@@ -52,8 +49,4 @@ sf::Vector2f Chest::SetRandomPosition()
     return sf::Vector2f{ x, y };
 }
 
-sf::Vector2f Chest::GetMousePos(sf::RenderWindow& gameWindow)
-{
-    sf::Vector2f mousePos = gameWindow.mapPixelToCoords(sf::Mouse::getPosition(gameWindow));
-    return mousePos;
-}
+

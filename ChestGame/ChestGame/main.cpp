@@ -1,13 +1,10 @@
-#include "GameStateManager.h"
-#include "MainMenu.h"
-#include "Playing.h"
-#include "GameCore.h"
+#include "Game.h"
 
 
 
 int main() 
 {
-    GameCore game;
-    game.run();
+    Game KurastGame;
+    KurastGame.Run();
     return 0;
 }

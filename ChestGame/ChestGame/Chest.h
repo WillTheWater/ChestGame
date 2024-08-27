@@ -4,13 +4,13 @@ class Chest
 {
 public:
     Chest();
-    ~Chest();
 
-    void SpawnChest(sf::RenderWindow& gameWindow);
-    sf::Vector2f SetRandomPosition();
-    sf::Vector2f GetMousePos(sf::RenderWindow& gameWindow);
+    void                        SpawnChest(sf::RenderWindow& gameWindow);
+    sf::Vector2f                SetRandomPosition();
+    
 
-    sf::Texture chestTexture;
-    sf::Sprite chestSprite;
-    bool canOpenChest = true;
+    sf::Texture                 chestTexture;
+    sf::Sprite                  chestSprite;
+    bool                        canOpenChest;
 };
+

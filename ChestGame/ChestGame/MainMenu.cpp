@@ -1,39 +1,50 @@
 #include "MainMenu.h"
-#include <iostream>
+
 
 MainMenu::MainMenu()
-    :m_StartButton("Start Game"), m_QuitButton("Exit the Kurast")
 {
-    m_MainmenuTexture.loadFromFile("assets/graphics/mainmenu.png");
-    m_MainmenuSprite.setTexture(m_MainmenuTexture);
-    std::cout << "Main Menu loaded\n";
+	mMainmenuBackgroundTexture.loadFromFile("assets/graphics/mainmenu.png");
+	mMainmenuBackgroundSprite.setTexture(mMainmenuBackgroundTexture);
+	
 }
 
-void MainMenu::HandleInput(const sf::Event& event)
+MainMenu::~MainMenu()
 {
-    // Handle input for the main menu
-    m_StartButton.HandleEvent(event);
-    m_QuitButton.HandleEvent(event);
-    std::cout << "Event tick\n";
+	std::cout << "MainMenu deleted" << std::endl;
 }
 
-void MainMenu::Update() 
+void MainMenu::Update(sf::RenderWindow& window)
 {
-    // Update logic for the main menu
-   
+	
 }
 
-void MainMenu::Draw(sf::RenderWindow& window) 
+void MainMenu::Draw(sf::RenderWindow& window)
 {
-    // Set button positions
-    m_StartButton.UpdatePosition(sf::Vector2f{ window.getSize().x / 2.f - m_StartButton.GetBounds().width / 2.f,window.getSize().y / 2.f });
-    m_QuitButton.UpdatePosition(sf::Vector2f{ window.getSize().x / 2.f - m_QuitButton.GetBounds().width / 2.f,window.getSize().y / 2.f + m_StartButton.GetBounds().height });
-
-    window.clear(); // Example use of this-> (optional)
-
-    // Draw main menu items
-    window.draw(m_MainmenuSprite);
-    m_StartButton.Draw(window);
-    m_QuitButton.Draw(window);
-    window.display();
+	window.draw(mMainmenuBackgroundSprite);
+	mStartButton.InitButton("Start", "assets/graphics/button.png", window, sf::Vector2f {window.getSize().x / 2.f - mStartButton.GetBounds().width/2.f, window.getSize().y / 2.f});
+	mQuitButton.InitButton("Exit the Kurast", "assets/graphics/button.png", window, sf::Vector2f {window.getSize().x / 2.f - mStartButton.GetBounds().width/2.f, window.getSize().y / 2.f + mStartButton.GetBounds().height});
 }
+
+bool MainMenu::HandleEvent(sf::Event event)
+{
+	
+	return false;
+}
+
+int MainMenu::HandleButtonEvent(sf::Event event)
+{
+	if (mStartButton.HandleEvent(event))
+	{
+		std::cout << "Play\n";
+		std::cout << "Returning 1\n";
+		return 1;
+	}
+	if (mQuitButton.HandleEvent(event))
+	{
+		std::cout << "Quit\n";
+		std::cout << "Returning 2\n";
+		return 2;
+	}
+	return 0;
+}
+

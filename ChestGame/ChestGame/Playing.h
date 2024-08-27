@@ -1,13 +1,23 @@
 #pragma once
-#include "GameState.h"
+#include "State.h"
+#include "Chest.h"
+#include "Button.h"
 
-class Playing : public GameState 
+class Playing : public State
 {
 public:
-    Playing();
-    void HandleInput(const sf::Event& event) override;
-    void Update() override;
-    void Draw(sf::RenderWindow& window) override;
+	Playing();
+	~Playing() override;
+	void						Update(sf::RenderWindow& window) override;
+	void						Draw(sf::RenderWindow& window) override;
+	bool						HandleEvent(sf::Event event) override;
+	int							HandleButtonEvent(sf::Event event) override;
 
 private:
+	sf::Texture					mPlayingBackgroundTexture;
+	sf::Sprite					mPlayingBackgroundSprite;
+	Chest						mChest;
+	Button						mResetButton;
+	Button						mQuitButton;
 };
+

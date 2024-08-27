@@ -1,17 +1,20 @@
 #pragma once
+#include "State.h"
 #include "Button.h"
-#include "GameState.h"
 
-class MainMenu : public GameState
+class MainMenu : public State
 {
 public:
-    MainMenu();
-    void HandleInput(const sf::Event& event) override;
-    void Update() override;
-    void Draw(sf::RenderWindow& window) override;
-protected:
-    sf::Texture m_MainmenuTexture;
-    sf::Sprite m_MainmenuSprite;
-    Button m_StartButton;
-    Button m_QuitButton;
+	MainMenu();
+	~MainMenu() override;
+	void						Update(sf::RenderWindow& window) override;
+	void						Draw(sf::RenderWindow& window) override;
+	bool						HandleEvent(sf::Event event) override;
+	int							HandleButtonEvent(sf::Event event) override;
+private:
+	sf::Texture					mMainmenuBackgroundTexture;
+	sf::Sprite					mMainmenuBackgroundSprite;
+	Button						mStartButton;
+	Button						mQuitButton;
 };
+

@@ -141,32 +141,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BaseState.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameCore.cpp" />
-    <ClCompile Include="GameStateManager.cpp" />
-    <ClCompile Include="Gold.cpp" />
-    <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Playing.cpp" />
-    <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="StateController.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseState.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Chest.h" />
-    <ClInclude Include="GameCore.h" />
-    <ClInclude Include="GameState.h" />
-    <ClInclude Include="GameStateManager.h" />
-    <ClInclude Include="GameStates.h" />
-    <ClInclude Include="Gold.h" />
-    <ClInclude Include="Item.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Playing.h" />
-    <ClInclude Include="StateManager.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="StateController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

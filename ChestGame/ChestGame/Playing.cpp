@@ -2,20 +2,45 @@
 
 Playing::Playing()
 {
+	mPlayingBackgroundTexture.loadFromFile("assets/graphics/background.png");
+	mPlayingBackgroundSprite.setTexture(mPlayingBackgroundTexture);
 }
 
-void Playing::HandleInput(const sf::Event& event)
+Playing::~Playing()
 {
+	std::cout << "Playing deleted" << std::endl;
 }
 
-void Playing::Update()
+void Playing::Update(sf::RenderWindow& window)
 {
-    // Game logic updates (e.g., chest, items)
+	//std::cout << "Playing is Being Updated" << std::endl;
 }
 
-void Playing::Draw(sf::RenderWindow& window) 
+void Playing::Draw(sf::RenderWindow& window)
 {
-    window.clear(); // Example use of this-> (optional)
-    // Draw the game world, items, etc.
-    window.display();
+	window.draw(mPlayingBackgroundSprite);
+	mResetButton.InitButton("Reset", "assets/graphics/button.png", window, sf::Vector2f{ window.getSize().x - mResetButton.GetBounds().width,window.getSize().y - mResetButton.GetBounds().height });
+	mQuitButton.InitButton("Exit the Kurast", "assets/graphics/button.png", window, sf::Vector2f{ 0, window.getSize().y - mQuitButton.GetBounds().height });
+	mChest.SpawnChest(window);
+	
+}
+
+bool Playing::HandleEvent(sf::Event event)
+{
+	return false;
+}
+
+int Playing::HandleButtonEvent(sf::Event event)
+{
+	if (mResetButton.HandleEvent(event))
+	{
+		std::cout << "Reset Level\n";
+		return 1;
+	}
+	if (mQuitButton.HandleEvent(event))
+	{
+		std::cout << "Quit\n";
+		return 2;
+	}
+	return 0;
 }

@@ -1,113 +1,179 @@
-#include <iostream>
-#include "SFML/Graphics.hpp"
-#include "Chest.h"
-#include "Gold.h"
-#include "Button.h"
-#include "GameStates.h"
+#include "Game.h"
 
+const float Game::PlayerSpeed = 100.f;
+const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
-
-
-/*int main()
+Game::Game()
+	: mWindow(sf::VideoMode(1920, 1080), "The Lower Kurast", sf::Style::Close)
+	, mTexture()
+	, mFont()
+	, mStatisticsText()
+	, mStatisticsUpdateTime()
+	, mStatisticsNumFrames(0)
+	, mIsMovingUp(false)
+	, mIsMovingDown(false)
+	, mIsMovingRight(false)
+	, mIsMovingLeft(false)
+	, mMouseClick(false)
 {
-    // Game window
-    sf::RenderWindow gameWindow(sf::VideoMode(1920, 1080), "The Lower Kurast");
-    sf::Image windowIcon;
-    windowIcon.loadFromFile("assets/graphics/icon.png");
-    gameWindow.setIcon(windowIcon.getSize().x, windowIcon.getSize().y, windowIcon.getPixelsPtr());
-    //-----------------------------------------------------------------------------------------------------------
-    // Cursor
-    sf::Cursor cursorOpen;
-    sf::Image cursorOpenImage;
-    cursorOpenImage.loadFromFile("assets/graphics/cursoropen.png");
-    cursorOpen.loadFromPixels(cursorOpenImage.getPixelsPtr(), cursorOpenImage.getSize(), { 0, 0 });
-    gameWindow.setMouseCursor(cursorOpen);
-    sf::Cursor cursorClosed;
-    sf::Image cursorClosedImage;
-    cursorClosedImage.loadFromFile("assets/graphics/cursorclosed.png");
-    cursorClosed.loadFromPixels(cursorClosedImage.getPixelsPtr(), cursorClosedImage.getSize(), { 0, 0 });
+	mWindow.setFramerateLimit(60);
 
-    gameWindow.setFramerateLimit(60);
-    sf::Clock clock;
-    //-----------------------------------------------------------------------------------------------------------
-    // Background Texture
-    sf::Texture backgroundTexture;
-    backgroundTexture.loadFromFile("assets/graphics/background.png"); 
-    sf::Sprite backgroundSprite;
-    backgroundSprite.setTexture(backgroundTexture);
-    sf::Texture mainmenuTexture;
-    mainmenuTexture.loadFromFile("assets/graphics/mainmenu.png");
-    sf::Sprite mainmenuSprite;
-    mainmenuSprite.setTexture(mainmenuTexture);
-    //-----------------------------------------------------------------------------------------------------------
-    // Start Button
-    Button startButton;
-    startButton.UpdatePosition(sf::Vector2f{ gameWindow.getSize().x/2.f - startButton.GetBounds().width/2.f,gameWindow.getSize().y / 2.f});
-    startButton.SetButtonText("Start Game");
-    Button quitButton;
-    quitButton.UpdatePosition(sf::Vector2f{ gameWindow.getSize().x / 2.f - quitButton.GetBounds().width / 2.f,gameWindow.getSize().y / 2.f + startButton.GetBounds().height});
-    quitButton.SetButtonText("Exit the Kurast");
-    Button resetButton;
-    resetButton.UpdatePosition(sf::Vector2f{ gameWindow.getSize().x / 2.f - resetButton.GetBounds().width / 2.f,gameWindow.getSize().y - resetButton.GetBounds().height });
-    resetButton.SetButtonText("Reset");
-    //-----------------------------------------------------------------------------------------------------------
-    // Chests
-    Chest chest1;
-    Chest chest2;
-    Chest chest3;
-    //-----------------------------------------------------------------------------------------------------------
-    // Gold
-    std::unique_ptr<Gold> gold = std::make_unique<Gold>();
+	// Cursor
+	mCursorOpenImage.loadFromFile("assets/graphics/cursoropen.png");
+	mCursorOpen.loadFromPixels(mCursorOpenImage.getPixelsPtr(), mCursorOpenImage.getSize(), { 0, 0 });
+	mCursorClosedImage.loadFromFile("assets/graphics/cursorclosed.png");
+	mCursorClosed.loadFromPixels(mCursorClosedImage.getPixelsPtr(), mCursorClosedImage.getSize(), { 0, 0 });
+	mWindow.setMouseCursor(mCursorOpen);
 
-    // Main game loop
-    while (gameWindow.isOpen())
-    {
-        // Calculate deltaTime (time since last frame)
-        sf::Time deltaTime = clock.restart();
-        float dt = deltaTime.asSeconds();
-        // Mouse Postion
-        sf::Vector2f mousePos = gameWindow.mapPixelToCoords(sf::Mouse::getPosition(gameWindow));
-        //-----------------------------------------------------------------------------------------------------------
-        // Process events
-        
-        
-        sf::Event event;
-        while (gameWindow.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed) { gameWindow.close(); }
-        }
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){ gameWindow.setMouseCursor(cursorClosed); }
-        else { gameWindow.setMouseCursor(cursorOpen); }
-        switch (gameState)
-        {
-            case GameState::MainMenu:
-                if (startButton.HandleEvent(event)) { gameState = GameState::Playing; }
-                if (quitButton.HandleEvent(event)) { gameWindow.close(); }
-                break;
-            case GameState::Playing:
-                if (resetButton.HandleEvent(event)) { gameState = GameState::MainMenu; }
-                break;
-        }
-        // Render GameStates
-        gameWindow.clear();
-        switch (gameState) 
-        {
-            case GameState::MainMenu:
-                gameWindow.draw(mainmenuSprite);
-                startButton.Draw(gameWindow); 
-                quitButton.Draw(gameWindow);
-                break;
-            case GameState::Playing:
-                gameWindow.draw(backgroundSprite);
-                chest1.SpawnChest(gameWindow);
-                chest2.SpawnChest(gameWindow);
-                chest3.SpawnChest(gameWindow);
-                gold->DrawItem(gameWindow, sf::Vector2f(gameWindow.getSize().x / 2.f, gameWindow.getSize().y / 2.f));
-                gold->Pickup(event);
-                resetButton.Draw(gameWindow);
-                break;
-        }
-        gameWindow.display();
-    }
-    return 0;
-}*/
+	// Window icon
+	mWindowIcon.loadFromFile("assets/graphics/icon.png");
+	mWindow.setIcon(mWindowIcon.getSize().x, mWindowIcon.getSize().y, mWindowIcon.getPixelsPtr());
+
+	mFont.loadFromFile("assets/font/bolddiablo.ttf");
+	mStatisticsText.setFont(mFont);
+	mStatisticsText.setPosition(5.f, 5.f);
+	mStatisticsText.setCharacterSize(40);
+
+	// State Controller
+	mStateController.InitState();
+}
+
+void Game::Run()
+{
+	sf::Clock clock;
+	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	while (mWindow.isOpen())
+	{
+		sf::Time elapsedTime = clock.restart();
+		timeSinceLastUpdate += elapsedTime;
+		while (timeSinceLastUpdate > TimePerFrame)
+		{
+			timeSinceLastUpdate -= TimePerFrame;
+
+			ProcessEvents();
+			Update(TimePerFrame);
+		}
+
+		UpdateStatistics(elapsedTime);
+		UpdateGameState();
+		Render();
+	}
+	mStateController.~StateController(); // Delete the State Controller
+}
+
+void Game::ProcessEvents()
+{
+	sf::Event event;
+	while (mWindow.pollEvent(event))
+	{
+		switch (event.type)
+		{
+			case sf::Event::MouseButtonPressed:
+				HandleMouseInput(event.mouseButton.button, true); //mWindow.setMouseCursor(mCursorClosed); std::cout << "Mouse Close\n";
+				break;
+
+			case sf::Event::MouseButtonReleased:
+				HandleMouseInput(event.mouseButton.button, false); //mWindow.setMouseCursor(mCursorOpen); std::cout << "Mouse Open\n";
+				break;
+
+			case sf::Event::KeyPressed:
+				HandleKeyboardInput(event.key.code, true);
+				break;
+
+			case sf::Event::KeyReleased:
+				HandleKeyboardInput(event.key.code, false);
+				break;
+
+			case sf::Event::Closed:
+				mWindow.close();
+				break;
+		}
+		switch(mStateController.StateEvent(event))
+		{
+			case 1:
+				mStateController.SwitchState(new Playing);
+				break;
+
+			case 2:
+				mWindow.close();
+				exit(0);
+				break;
+
+		}
+		// State event handling
+		
+		
+		
+		// Only for testing state machine
+		//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
+			//;
+		//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::M)
+			//mStateController.SwitchState(new MainMenu);
+	}		  
+}			  
+			  
+void Game::Update(sf::Time elapsedTime)
+{			  
+	// Mouse update
+	if (mMouseClick) { mWindow.setMouseCursor(mCursorClosed); }
+	else { mWindow.setMouseCursor(mCursorOpen); }
+			  
+	sf::Vector2f movement(0.f, 0.f);
+	if (mIsMovingUp)
+		movement.y -= PlayerSpeed;
+	if (mIsMovingDown)
+		movement.y += PlayerSpeed;
+	if (mIsMovingLeft)
+		movement.x -= PlayerSpeed;
+	if (mIsMovingRight)
+		movement.x += PlayerSpeed;
+
+}
+
+void Game::UpdateGameState()
+{
+	//mStateController.StateUpdate(mWindow);
+}
+
+void Game::Render()
+{
+	mWindow.clear();
+	mWindow.draw(mStatisticsText);
+	mStateController.StateDraw(mWindow);
+	mWindow.display();
+}
+
+void Game::UpdateStatistics(sf::Time elapsedTime)
+{
+	mStatisticsUpdateTime += elapsedTime;
+	mStatisticsNumFrames += 1;
+
+	if (mStatisticsUpdateTime >= sf::seconds(1.0f))
+	{
+		mStatisticsText.setString(
+			"Frames / Second = " + std::to_string(mStatisticsNumFrames) + "\n" +
+			"Time / Update = " + std::to_string(mStatisticsUpdateTime.asMicroseconds() / mStatisticsNumFrames) + "us");
+
+		mStatisticsUpdateTime -= sf::seconds(1.0f);
+		mStatisticsNumFrames = 0;
+	}
+}
+
+void Game::HandleKeyboardInput(sf::Keyboard::Key key, bool isPressed)
+{
+	
+	if (key == sf::Keyboard::W)
+		mIsMovingUp = isPressed;
+	else if (key == sf::Keyboard::S)
+		mIsMovingDown = isPressed;
+	else if (key == sf::Keyboard::A)
+		mIsMovingLeft = isPressed;
+	else if (key == sf::Keyboard::D)
+		mIsMovingRight = isPressed;
+}
+
+void Game::HandleMouseInput(sf::Mouse::Button button, bool isPressed)
+{
+	if (button == sf::Mouse::Left)
+		mMouseClick = isPressed;
+}
