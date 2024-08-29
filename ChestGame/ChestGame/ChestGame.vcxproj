@@ -144,6 +144,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Playing.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Chest.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Playing.h" />
     <ClInclude Include="State.h" />

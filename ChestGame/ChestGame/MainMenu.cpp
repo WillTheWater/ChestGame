@@ -27,7 +27,6 @@ void MainMenu::Draw(sf::RenderWindow& window)
 
 bool MainMenu::HandleEvent(sf::Event event)
 {
-	
 	return false;
 }
 

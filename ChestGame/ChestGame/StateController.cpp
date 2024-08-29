@@ -2,8 +2,8 @@
 
 StateController::~StateController()
 {
-	delete currentState;
 	std::cout << "State Deleted" << std::endl;
+	delete currentState;
 }
 
 void StateController::InitState()
