@@ -16,7 +16,7 @@ public:
 private:
 	sf::Texture					mPlayingBackgroundTexture;
 	sf::Sprite					mPlayingBackgroundSprite;
-	Chest						mChest;
+	Chest*						mChest;
 	Button						mResetButton;
 	Button						mQuitButton;
 };

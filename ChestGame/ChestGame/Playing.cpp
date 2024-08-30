@@ -2,12 +2,15 @@
 
 Playing::Playing()
 {
+	mChest = new Chest;
 	mPlayingBackgroundTexture.loadFromFile("assets/graphics/background.png");
 	mPlayingBackgroundSprite.setTexture(mPlayingBackgroundTexture);
 }
 
 Playing::~Playing()
 {
+	if(mChest != nullptr){ delete mChest; }
+	
 	std::cout << "Playing deleted" << std::endl;
 }
 
@@ -21,8 +24,7 @@ void Playing::Draw(sf::RenderWindow& window)
 	window.draw(mPlayingBackgroundSprite);
 	mResetButton.InitButton("Reset", "assets/graphics/button.png", window, sf::Vector2f{ window.getSize().x - mResetButton.GetBounds().width,window.getSize().y - mResetButton.GetBounds().height });
 	mQuitButton.InitButton("Exit the Kurast", "assets/graphics/button.png", window, sf::Vector2f{ 0, window.getSize().y - mQuitButton.GetBounds().height });
-	mChest.SpawnChest(window);
-	
+	mChest->SpawnChest(window);
 }
 
 bool Playing::HandleEvent(sf::Event event)

@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "SFML/Graphics.hpp"
+//#include "Chest.h"
 
 class State
 {
@@ -10,4 +11,5 @@ public:
 	virtual void				Draw(sf::RenderWindow& window) = 0;
 	virtual bool				HandleEvent(sf::Event event) = 0;
 	virtual int					HandleButtonEvent(sf::Event event) = 0;
+	//Chest chest;
 };
