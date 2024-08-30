@@ -4,6 +4,8 @@ class Item
 public:
 	void AddAmount(int amt);
 	int GetAmount();
+
+private:
 	int amount;
 };
 

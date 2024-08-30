@@ -63,6 +63,8 @@ void Chest::DropLoot()
         std::uniform_int_distribution<> dropDist(dropMin, dropMax);
         int numberOFDrops = dropDist(gen);
         
+        
+
         std::cout << "Number of drops: " << numberOFDrops << std::endl;
     }
 }

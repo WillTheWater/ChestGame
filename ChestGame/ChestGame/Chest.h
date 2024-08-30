@@ -17,6 +17,6 @@ public:
     bool                        chestOpened;
 
 private:
-    std::vector<Item*> numbers[1];
+    std::vector<Item*> items[0];
 };
 
